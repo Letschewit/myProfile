@@ -72,8 +72,6 @@ const ambientLight = new THREE.AmbientLight(0xffffff)
 const aboutMeGroup = new THREE.Group()
 aboutMeGroup.add(text, photo) 
 
-//add Things here
-scene.add(ambientLight, sphere1, sphere2, star, aboutMeGroup)
 
 /**
  * Sizes
@@ -110,7 +108,6 @@ const camera = new THREE.PerspectiveCamera(
 camera.position.x = 1
 camera.position.y = 1
 camera.position.z = 50
-scene.add(camera)
 
 // // Controls
 // const controls = new OrbitControls(camera, canvas)
@@ -170,6 +167,13 @@ function backCamera() {
 back.onclick = backCamera
 aboutMe.onclick = aboutMeCamera
 
+
+//add Things here
+scene.add(ambientLight, sphere1, sphere2, star, aboutMeGroup, camera)
+const mouse = {
+  x: undefined,
+  y: undefined
+}
 /**
  * Animate
  */
@@ -190,6 +194,10 @@ const tick = () => {
     star.rotation.x += 0.0011
     star.rotation.z += -0.0011
 
+    aboutMeGroup.rotation.y = -mouse.x / 10
+    aboutMeGroup.rotation.x = mouse.y / 10
+    renderer.render( scene, camera )
+
   // Update controls
   // controls.update()
   // Render
@@ -200,3 +208,10 @@ const tick = () => {
 }
 
 tick()
+
+addEventListener ('mousemove', () => {
+  mouse.x = (event.clientX/ innerWidth) * 2 - 1
+  mouse.y = -(event.clientY/ innerHeight) * 2 + 1
+  
+  console.log(mouse)
+})
